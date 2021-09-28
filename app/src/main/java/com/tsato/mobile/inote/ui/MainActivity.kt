@@ -1,7 +1,8 @@
-package com.tsato.mobile.inote
+package com.tsato.mobile.inote.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.tsato.mobile.inote.R
 
 class MainActivity : AppCompatActivity() {
 

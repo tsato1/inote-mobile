@@ -3,6 +3,7 @@ package com.tsato.mobile.inote.data.remote
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.Response
+import com.tsato.mobile.inote.util.Constants.IGNORE_AUTH_URLS
 
 class BasicAuthInterceptor : Interceptor {
 

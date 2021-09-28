@@ -1,5 +1,6 @@
 package com.tsato.mobile.inote.data.remote
 
+import com.tsato.mobile.inote.data.local.entities.Note
 import com.tsato.mobile.inote.data.remote.requests.AccountRequest
 import com.tsato.mobile.inote.data.remote.requests.AddOwnerRequest
 import com.tsato.mobile.inote.data.remote.requests.DeleteNoteRequest
