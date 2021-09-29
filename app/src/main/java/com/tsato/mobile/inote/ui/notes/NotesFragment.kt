@@ -52,6 +52,7 @@ class NotesFragment : BaseFragment(R.layout.fragment_notes) {
 
         setupRecyclerView()
         subscribeToObservers()
+        setSwipeRefreshLayout()
 
         noteAdapter.setOnItemClickListener {
             findNavController().navigate(
@@ -98,6 +99,12 @@ class NotesFragment : BaseFragment(R.layout.fragment_notes) {
         swipingItem.observe(viewLifecycleOwner, {
             swipeRefreshLayout.isEnabled = !it
         })
+    }
+
+    private fun setSwipeRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.syncAllNotes()
+        }
     }
 
     private fun setupRecyclerView() = rvNotes.apply {

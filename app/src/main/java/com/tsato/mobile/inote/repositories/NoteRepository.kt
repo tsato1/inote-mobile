@@ -13,6 +13,7 @@ import com.tsato.mobile.inote.util.networdBoundResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import javax.inject.Inject
 
 class NoteRepository @Inject constructor(
@@ -65,18 +66,44 @@ class NoteRepository @Inject constructor(
 
     suspend fun getNoteById(noteId: String) = noteDao.getNoteById(noteId)
 
+    private var currentNotesResponse: Response<List<Note>>? = null
+
+    suspend fun syncNotes() {
+        val locallyDeletedNoteIds = noteDao.getAllLocallyDeletedNoteIds()
+        locallyDeletedNoteIds.forEach { locallyDeletedNoteId -> // sync with server
+            deleteNote(locallyDeletedNoteId.deletedNoteId)
+        }
+
+        val unsyncedNotes = noteDao.getAllUnsyncedNotes()
+        unsyncedNotes.forEach { unsyncedNote -> // sync with server
+            insertNote(unsyncedNote)
+        }
+
+        currentNotesResponse = noteApi.getNotes() // get the current version of notes from the server
+        currentNotesResponse?.body()?.let { notes ->
+            // update the local database
+            noteDao.deleteAllNotes()
+            insertNotes(notes.onEach { note ->
+                note.isSynced = true
+            })
+        }
+    }
+
     fun getAllNotes(): Flow<Resource<List<Note>>> {
         return networdBoundResource(
             query = {
                 noteDao.getAllNotes()
             },
             fetch = {
-                noteApi.getNotes()
+                syncNotes()
+                currentNotesResponse
             },
-            saveFetchedResult = { response ->
-                response.body()?.let {
+            saveFetchedResult = { response -> // inserts the notes in the response into database
+                response?.body()?.let {
                     // insert notes in database
-                    insertNotes(it)
+                    insertNotes(it.onEach { note ->
+                        note.isSynced = true
+                    })
                 }
             },
             shouldFetch = {
