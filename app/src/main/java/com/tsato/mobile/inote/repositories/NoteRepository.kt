@@ -2,9 +2,11 @@ package com.tsato.mobile.inote.repositories
 
 import android.app.Application
 import com.tsato.mobile.inote.data.local.NoteDao
+import com.tsato.mobile.inote.data.local.entities.LocallyDeletedNoteId
 import com.tsato.mobile.inote.data.local.entities.Note
 import com.tsato.mobile.inote.data.remote.NoteApi
 import com.tsato.mobile.inote.data.remote.requests.AccountRequest
+import com.tsato.mobile.inote.data.remote.requests.DeleteNoteRequest
 import com.tsato.mobile.inote.util.Resource
 import com.tsato.mobile.inote.util.checkForInternetConnection
 import com.tsato.mobile.inote.util.networdBoundResource
@@ -37,6 +39,28 @@ class NoteRepository @Inject constructor(
 
     suspend fun insertNotes(notes: List<Note>) {
         notes.forEach { insertNote(it) }
+    }
+
+    suspend fun deleteNote(noteId: String) {
+        val response = try {
+            noteApi.deleteNote(DeleteNoteRequest(noteId))
+        }
+        catch (e: Exception) {
+            null
+        }
+
+        noteDao.deleteNote(noteId)
+
+        if (response == null || !response.isSuccessful) {
+            noteDao.insertLocallyDeletedNoteId(LocallyDeletedNoteId(noteId))
+        }
+        else {
+            deleteLocallyDeletedNoteId(noteId)
+        }
+    }
+
+    suspend fun deleteLocallyDeletedNoteId(deletedNoteId: String) {
+        noteDao.deleteLocallyDeletedNoteId(deletedNoteId)
     }
 
     suspend fun getNoteById(noteId: String) = noteDao.getNoteById(noteId)
