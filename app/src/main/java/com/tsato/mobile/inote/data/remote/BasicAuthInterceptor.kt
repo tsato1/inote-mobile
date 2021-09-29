@@ -7,8 +7,8 @@ import com.tsato.mobile.inote.util.Constants.IGNORE_AUTH_URLS
 
 class BasicAuthInterceptor : Interceptor {
 
-    val email: String? = null
-    val password: String? = null
+    var email: String? = null
+    var password: String? = null
 
     // each interceptor modifies our request
     override fun intercept(chain: Interceptor.Chain): Response {
