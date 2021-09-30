@@ -10,7 +10,7 @@ import com.tsato.mobile.inote.data.remote.requests.AddOwnerRequest
 import com.tsato.mobile.inote.data.remote.requests.DeleteNoteRequest
 import com.tsato.mobile.inote.util.Resource
 import com.tsato.mobile.inote.util.checkForInternetConnection
-import com.tsato.mobile.inote.util.networdBoundResource
+import com.tsato.mobile.inote.util.networkBoundResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -91,7 +91,7 @@ class NoteRepository @Inject constructor(
     }
 
     fun getAllNotes(): Flow<Resource<List<Note>>> {
-        return networdBoundResource(
+        return networkBoundResource(
             query = {
                 noteDao.getAllNotes()
             },

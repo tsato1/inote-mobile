@@ -1,6 +1,5 @@
 package com.tsato.mobile.inote.ui.notesdetail
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.tsato.mobile.inote.repositories.NoteRepository
 import com.tsato.mobile.inote.util.Event
 import com.tsato.mobile.inote.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NoteDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NoteDetailViewModel @Inject constructor(
     private val repository: NoteRepository
 ): ViewModel() {
 

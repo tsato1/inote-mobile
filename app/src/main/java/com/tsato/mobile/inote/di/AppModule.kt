@@ -14,15 +14,15 @@ import com.tsato.mobile.inote.util.Constants.ENCRYPTED_SHARED_PREF_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class) // live as long as this application does
+@InstallIn(SingletonComponent::class) // live as long as this application does
 object AppModule {
 
     @Singleton

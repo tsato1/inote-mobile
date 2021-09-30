@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.*
  ResultType: the type that we load from the database (List<Note> in this app)
  RequestType: the type that the api returns
  */
-inline fun <ResultType, RequestType> networdBoundResource(
+inline fun <ResultType, RequestType> networkBoundResource(
     // logic that stipulates how we want to extract data from our database
     crossinline query: () -> Flow<ResultType>,
     // logic to fetch data from our api

@@ -1,15 +1,16 @@
 package com.tsato.mobile.inote.ui.notes
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.tsato.mobile.inote.data.local.entities.LocallyDeletedNoteId
 import com.tsato.mobile.inote.data.local.entities.Note
 import com.tsato.mobile.inote.repositories.NoteRepository
 import com.tsato.mobile.inote.util.Event
 import com.tsato.mobile.inote.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NotesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NotesViewModel @Inject constructor(
     private val repository: NoteRepository
 ): ViewModel() {
 

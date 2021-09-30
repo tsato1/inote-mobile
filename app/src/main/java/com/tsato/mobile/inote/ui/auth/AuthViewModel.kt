@@ -1,15 +1,17 @@
 package com.tsato.mobile.inote.ui.auth
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsato.mobile.inote.repositories.NoteRepository
 import com.tsato.mobile.inote.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AuthViewModel @Inject constructor(
     private val repository: NoteRepository
 ): ViewModel() {
 
