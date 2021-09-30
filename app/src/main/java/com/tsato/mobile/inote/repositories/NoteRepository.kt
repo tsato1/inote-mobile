@@ -6,6 +6,7 @@ import com.tsato.mobile.inote.data.local.entities.LocallyDeletedNoteId
 import com.tsato.mobile.inote.data.local.entities.Note
 import com.tsato.mobile.inote.data.remote.NoteApi
 import com.tsato.mobile.inote.data.remote.requests.AccountRequest
+import com.tsato.mobile.inote.data.remote.requests.AddOwnerRequest
 import com.tsato.mobile.inote.data.remote.requests.DeleteNoteRequest
 import com.tsato.mobile.inote.util.Resource
 import com.tsato.mobile.inote.util.checkForInternetConnection
@@ -111,6 +112,24 @@ class NoteRepository @Inject constructor(
                 // todo check timestamp to fetch or not
             }
         )
+    }
+
+    fun observeNoteById(noteId: String) = noteDao.observeNoteById(noteId)
+
+    suspend fun addOwnerToNote(owner: String, noteId: String) = withContext(Dispatchers.IO) {
+        try {
+            val response = noteApi.addOwnerToNote(AddOwnerRequest(owner, noteId))
+
+            if (response.isSuccessful && response.body()!!.successful) {
+                Resource.success(response.body()?.message)
+            }
+            else {
+                Resource.error(response.body()?.message ?: response.message(), null)
+            }
+        }
+        catch (e: Exception) {
+            Resource.error("Cannot connect to the server. Check your internet connection", null)
+        }
     }
 
     suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
